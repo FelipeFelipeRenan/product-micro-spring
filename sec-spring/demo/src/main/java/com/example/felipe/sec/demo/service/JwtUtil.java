@@ -3,6 +3,7 @@ package com.example.felipe.sec.demo.service;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
@@ -18,9 +19,9 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(String username){
+    public String generateToken(UserDetails userDetails){
         return Jwts.builder()
-            .setSubject(username)
+            .setSubject(userDetails.getUsername())
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + expiration))
             .signWith(SignatureAlgorithm.HS512, secret)
